@@ -1,0 +1,33 @@
+---
+title: "first-pipeline"
+author: "Aneesha Tamang"
+date: '2022-07-05'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Bash script for running QC (removing duplicates, realigning reads) with Picard tools and calling variants with Octopus
+```{bash}
+#!/bin/bash
+
+# Mark and remove duplicates
+module load picard
+java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates \ I=input.bam \ O=mdup_output.bam \ M=metrics.txt \ REMOVE_DUPLICATES=TRUE
+
+# Realign reads and insert indel qualities
+module load lofreq
+lofreq viterbi -f ref.fa -o vit_output.bam mdup_output.bam
+lofreq indelqual --dindel -f ref.fa vit_output.bam
+
+# Call variants with Octopus
+git clone https://github.com/luntergroup/octopus.git
+octopus/scripts/install.py --dependencies --forests
+echo 'export PATH='$(pwd)'/octopus/bin:$PATH' >> ~/.bash_profile
+source ~/.bash_profile
+
+FOREST="$(pwd)/octopus/resources/forests/germline.v0.7.4.forest"
+octopus -R ref.fa -I vit_output.bam -o vars.octopus.vcf.gz -C cancer
+```   
