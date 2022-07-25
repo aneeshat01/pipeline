@@ -10,24 +10,24 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Bash script for running QC (removing duplicates, realigning reads) with Picard tools and calling variants with Octopus
-```{bash}
+```{bash, eval=FALSE}
 #!/bin/bash
+
+# Read in the directory where user wants to store files
+echo Storage directory:
+read stdir
+
+cd $stdir
 
 # Mark and remove duplicates
 module load picard
-java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates \ I=input.bam \ O=mdup_output.bam \ M=metrics.txt \ REMOVE_DUPLICATES=TRUE
+java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I /data/tamanga2/RajagopalLabTemp/MTS-T1002.bam -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
 
 # Realign reads and insert indel qualities
 module load lofreq
-lofreq viterbi -f ref.fa -o vit_output.bam mdup_output.bam
-lofreq indelqual --dindel -f ref.fa vit_output.bam
+lofreq viterbi -f /home/tamanga2/data/hg19.fa -o vit_output.bam mdup_output.bam
+lofreq indelqual --dindel -f /home/tamanga2/data/hg19.fa -o iq_output.bam vit_output.bam
+samtools index -b $stdir/iq_output.bam
 
-# Call variants with Octopus
-git clone https://github.com/luntergroup/octopus.git
-octopus/scripts/install.py --dependencies --forests
-echo 'export PATH='$(pwd)'/octopus/bin:$PATH' >> ~/.bash_profile
-source ~/.bash_profile
-
-FOREST="$(pwd)/octopus/resources/forests/germline.v0.7.4.forest"
-octopus -R ref.fa -I vit_output.bam -o vars.octopus.vcf.gz -C cancer
-```   
+module load octopus
+octopus -R /home/tamanga2/data/hg19.fa -I iq_output.bam -o vars.octopus.vcf.gz -C cancer```   
