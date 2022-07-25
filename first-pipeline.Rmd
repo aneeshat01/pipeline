@@ -30,4 +30,5 @@ lofreq indelqual --dindel -f /home/tamanga2/data/hg19.fa -o iq_output.bam vit_ou
 samtools index -b $stdir/iq_output.bam
 
 module load octopus
-octopus -R /home/tamanga2/data/hg19.fa -I iq_output.bam -o vars.octopus.vcf.gz -C cancer```   
+octopus -R /home/tamanga2/data/hg19.fa -I iq_output.bam -o vars.octopus.vcf.gz -C cancer
+```   
