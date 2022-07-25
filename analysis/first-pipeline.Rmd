@@ -9,4 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Testing
+Get fastq file and graph quality scores
+```{r get data}
+#test fastq read
+library(ShortRead)
+library(ggplot2)
+fq = readFastq('/Users/tamanga2/Downloads/control.fastq')
+
+#get read info
+head(fq)
+
+#view sequences
+reads = sread(fq)
+head(reads)
+#graph quality scores
+```
