@@ -10,17 +10,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Get fastq file and graph quality scores
-```{r get data}
-#test fastq read
-library(ShortRead)
-library(ggplot2)
-fq = readFastq('/Users/tamanga2/Downloads/control.fastq')
+```{bash, eval = FALSE}
+#!/bin/bash
 
-#get read info
-head(fq)
+# Read in the directory where user wants to store files
+echo Storage directory:
+read stdir
 
-#view sequences
-reads = sread(fq)
-head(reads)
-#graph quality scores
+cd $stdir
+
+# Mark and remove duplicates
+module load picard
+java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I /data/tamanga2/RajagopalLabTemp/MTS-T1002.bam -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
+
+# Realign reads and insert indel qualities
+module load lofreq
+lofreq viterbi -f /home/tamanga2/data/hg19.fa -o vit_output.bam mdup_output.bam
+lofreq indelqual --dindel -f /home/tamanga2/data/hg19.fa -o iq_output.bam vit_output.bam
+samtools index -b $stdir/iq_output.bam
+
+module load octopus
+octopus -R /home/tamanga2/data/hg19.fa -I iq_output.bam -o vars.octopus.vcf.gz -C cancer
 ```
