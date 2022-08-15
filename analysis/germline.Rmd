@@ -19,6 +19,9 @@ read stdir
 
 cd $stdir
 
+echo Full path of BAM file:
+read bampath
+
 echo Run quality checks [y/n]?
 read runqc
 
@@ -26,7 +29,7 @@ read runqc
 if [runqc = y]
 then
   module load picard
-  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I /data/tamanga2/RajagopalLabTemp/MTS-T1002.bam -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
+  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I bampathwf -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
   
 echo Reference file name:
 read ref
