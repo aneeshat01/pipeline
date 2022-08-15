@@ -1,5 +1,5 @@
 ---
-title: "first-pipeline"
+title: "germline variant calling pipeline"
 author: "Aneesha Tamang"
 date: '2022-07-05'
 output: html_document
