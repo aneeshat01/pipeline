@@ -524,15 +524,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomaneeshat01pipelinetree5748296fef59de434cf23d2a751f0447128969e3targetblank5748296a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomaneeshat01pipelinetreeaee516578819bb7c1a13ac12e261f21af7f5213etargetblankaee5165a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/aneeshat01/pipeline/tree/5748296fef59de434cf23d2a751f0447128969e3" target="_blank">5748296</a>
+<a href="https://github.com/aneeshat01/pipeline/tree/aee516578819bb7c1a13ac12e261f21af7f5213e" target="_blank">aee5165</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomaneeshat01pipelinetree5748296fef59de434cf23d2a751f0447128969e3targetblank5748296a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomaneeshat01pipelinetreeaee516578819bb7c1a13ac12e261f21af7f5213etargetblankaee5165a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -542,7 +542,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/aneeshat01/pipeline/tree/5748296fef59de434cf23d2a751f0447128969e3" target="_blank">5748296</a>.
+<a href="https://github.com/aneeshat01/pipeline/tree/aee516578819bb7c1a13ac12e261f21af7f5213e" target="_blank">aee5165</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -615,6 +615,40 @@ Message
 <tbody>
 <tr>
 <td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/aneeshat01/pipeline/blob/aee516578819bb7c1a13ac12e261f21af7f5213e/analysis/germline.Rmd" target="_blank">aee5165</a>
+</td>
+<td>
+Aneesha Tamang
+</td>
+<td>
+2022-08-15
+</td>
+<td>
+Publish germline variant calling pipeline
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/aneeshat01/pipeline/fc4dd82dc4f6a7b66dce7eef8c2e9b5f33b838c2/docs/germline.html" target="_blank">fc4dd82</a>
+</td>
+<td>
+Aneesha Tamang
+</td>
+<td>
+2022-08-15
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
 html
 </td>
 <td>
@@ -680,6 +714,9 @@ read stdir
 
 cd $stdir
 
+echo Full path of BAM file:
+read bampath
+
 echo Run quality checks [y/n]?
 read runqc
 
@@ -687,7 +724,7 @@ read runqc
 if [runqc = y]
 then
   module load picard
-  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I /data/tamanga2/RajagopalLabTemp/MTS-T1002.bam -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
+  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I bampathwf -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
   
 echo Reference file name:
 read ref
