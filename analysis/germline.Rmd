@@ -1,0 +1,45 @@
+---
+title: "first-pipeline"
+author: "Aneesha Tamang"
+date: '2022-07-05'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Get fastq file and graph quality scores
+```{bash, eval = FALSE}
+#!/bin/bash
+
+# Read in the directory where user wants to store files
+echo Storage directory:
+read stdir
+
+cd $stdir
+
+echo Run quality checks [y/n]?
+read runqc
+
+# Mark and remove duplicates
+if [runqc = y]
+then
+  module load picard
+  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I /data/tamanga2/RajagopalLabTemp/MTS-T1002.bam -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
+  
+echo Reference file name:
+read ref
+
+module load octopus 
+octopus -R ref -I mdup_output.bam
+fi
+
+echo Reference file name:
+read ref
+echo BAM file name:
+read bam
+
+module load octopus 
+octopus -R ref -I bam
+```
