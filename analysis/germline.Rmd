@@ -29,7 +29,7 @@ read runqc
 if [runqc = y]
 then
   module load picard
-  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I bampathwf -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
+  java -Xmx4g -XX:ParallelGCThreads=5 -jar $PICARDJARPATH/picard.jar MarkDuplicates -I bampath -O mdup_output.bam -M metrics.txt -REMOVE_DUPLICATES TRUE
   
 echo Reference file name:
 read ref
