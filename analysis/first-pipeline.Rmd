@@ -29,6 +29,7 @@ lofreq viterbi -f /home/tamanga2/data/hg19.fa -o vit_output.bam mdup_output.bam
 lofreq indelqual --dindel -f /home/tamanga2/data/hg19.fa -o iq_output.bam vit_output.bam
 samtools index -b $stdir/iq_output.bam
 
+# Run variant caller
 module load octopus
 octopus -R /home/tamanga2/data/hg19.fa -I iq_output.bam -o vars.octopus.vcf.gz -C cancer
 ```
